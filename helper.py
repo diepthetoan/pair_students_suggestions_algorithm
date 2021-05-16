@@ -19,7 +19,7 @@ print(sort_scores_in_weeks([[2,9,4,5,1,8], [5,1,9,2,6,7], [1,2,7,5,3,6]]))
 # Bắt cặp học viên
 def pair_students(sorted_scored): # sorted_scored: {4: 1, 0: 2, 2: 4, 3: 5, 5: 8, 1: 9}
   length = len(sorted_scored)
-  pairs = [(i, length - i - 1) 
+  pairs = [(i, length - i - 1)
             for i in range(length//2)] # pairs: [(0, 5), (1, 4), (2, 3)]
   cmax = 0
   for pair in pairs:
@@ -29,7 +29,22 @@ def pair_students(sorted_scored): # sorted_scored: {4: 1, 0: 2, 2: 4, 3: 5, 5: 8
 print(pair_students(sort_scores([2,9,4,5,1,8])))
 
 
-# TODO: 
+# TODO:
 # - Chạy pair_students cho điểm của tuần kế tiếp
 # - So sánh cmax của tuần kế tiếp => chọn cách bắt cặp nào có cmax nào lớn hơn
-# - Tiếp tục cho hết 10 tuần 
+# - Tiếp tục cho hết 10 tuần
+
+def handle_algorithm(weeks):
+  week_cmax = {"pairs": [], "cmax": 0}
+  for week in weeks:
+    # sort score in a week
+    sorted_scores = sort_scores(week)
+    # pair students in a week
+    paired = pair_students(sorted_scores)
+    #
+    if week_cmax["cmax"] < paired["cmax"]:
+      week_cmax = paired
+
+  print('Result:', week_cmax)
+
+
