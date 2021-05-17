@@ -19,7 +19,8 @@ print(sort_scores_in_weeks([[2,9,4,5,1,8], [5,1,9,2,6,7], [1,2,7,5,3,6]]))
 # Bắt cặp học viên
 def pair_students(sorted_scored): # sorted_scored: {4: 1, 0: 2, 2: 4, 3: 5, 5: 8, 1: 9}
   length = len(sorted_scored)
-  pairs = [(i, length - i - 1)
+  keys = list(sorted_scored.keys())
+  pairs = [(keys[i], keys[length - i - 1])
             for i in range(length//2)] # pairs: [(0, 5), (1, 4), (2, 3)]
   cmax = 0
   for pair in pairs:
