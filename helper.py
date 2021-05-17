@@ -16,36 +16,57 @@ def sort_scores_in_weeks(arrs): # arrs=[[2,9,4,5,1,8], [5,1,9,2,6,7], [1,2,7,5,3
 
 print(sort_scores_in_weeks([[2,9,4,5,1,8], [5,1,9,2,6,7], [1,2,7,5,3,6]]))
 
+# Dùng để tính cmax cho nhiều tuần tương ứng với 1 pairs nhất định 
+def count_cmax(sorted_scored_array, pairs):
+  cmax = 0
+  # sorted_scores_before
+  for sorted_scored in sorted_scored_array:
+    for pair in pairs:
+      cmax += min(10, sorted_scored[pair[0]] + sorted_scored[pair[1]])
+  
+  return cmax
+
 # Bắt cặp học viên
 def pair_students(sorted_scored): # sorted_scored: {4: 1, 0: 2, 2: 4, 3: 5, 5: 8, 1: 9}
   length = len(sorted_scored)
   keys = list(sorted_scored.keys())
   pairs = [(keys[i], keys[length - i - 1])
             for i in range(length//2)] # pairs: [(0, 5), (1, 4), (2, 3)]
-  cmax = 0
-  for pair in pairs:
-    cmax += min(10, sorted_scored[pair[0]] + sorted_scored[pair[1]]) # cmax = 29
-  return {'pairs': pairs, 'cmax': cmax}
+  cmax = count_cmax([sorted_scored], pairs) # cmax = 29
+  return {'sorted_scored': [sorted_scored], 'pairs': pairs, 'cmax': cmax}
 
-print(pair_students(sort_scores([2,9,4,5,1,8])))
+print(pair_students(sort_scores([8.83, 7, 6.33, 9.67, 6.83, 9.67])))
 
-
-# TODO:
-# - Chạy pair_students cho điểm của tuần kế tiếp
-# - So sánh cmax của tuần kế tiếp => chọn cách bắt cặp nào có cmax nào lớn hơn
-# - Tiếp tục cho hết 10 tuần
 
 def handle_algorithm(weeks):
-  week_cmax = {"pairs": [], "cmax": 0}
-  for week in weeks:
-    # sort score in a week
-    sorted_scores = sort_scores(week)
-    # pair students in a week
-    paired = pair_students(sorted_scores)
-    #
-    if week_cmax["cmax"] < paired["cmax"]:
-      week_cmax = paired
+  week_cmax = pair_students(sort_scores(weeks[0])) # {'sorted_scored': [[(0, 5), (1, 4), (2, 3)], []], 'pairs': pairs, 'cmax': cmax}
+  for i in range(1, len(weeks)):
+    sorted_scores_before = week_cmax['sorted_scored'] # array
+    sorted_scores_week = sort_scores(weeks[i])
 
-  print('Result:', week_cmax)
+    # Tên biến lấy ví dụ đang xét ở tuần thứ 3
+    # pairs students in a week
+    paired_3 = pair_students(sorted_scores_week)
+
+    # cmax33 là cmax của tuần thứ 3 với pairs 3
+    # cmax_13_23 là cmax của 2 tuần 1 và 2 với pairs 3
+    cmax33 = paired_3["cmax"]
+    cmax_13_23 = count_cmax(sorted_scores_before, paired_3['pairs'])
+
+    # cmax31 là cmax của tuần thứ 3 với pairs best (week_cmax['pairs'])
+    # cmax_11_21 là cmax của 2 tuần 1 và 2 với pairs best (week_cmax['pairs'])
+    cmax31 = count_cmax([sorted_scores_week], week_cmax['pairs'])
+    cmax_11_21 = week_cmax['cmax']
+
+    # SO sánh cmax của 3 tuần giữa: pairs 3 và pairs best và chọn pairs có cmax tổng lớn hơn 
+    if cmax33 + cmax_13_23 > cmax31 + cmax_11_21:
+      week_cmax['pairs'] = paired_3['pairs']
+      week_cmax['cmax'] = cmax33 + cmax_13_23
+    else:
+      week_cmax['cmax'] = cmax31 + cmax_11_21
+    
+    week_cmax['sorted_scored'].append(sorted_scores_week)
+
+  print('Result:', week_cmax['pairs'])
 
 
