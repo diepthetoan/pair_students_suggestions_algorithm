@@ -30,7 +30,7 @@ def preprocessing_datasets(path):
 def preprocessing_datasets_v1(path):
     dataset = read_file_excel(path + '/class1-output.xls')
     selected_columns = ['w1', 'w2', 'w4', 'w5', 'w7', 'w8', 'w10', 'w11']
-    output = dataset[selected_columns]
+    output = pd.DataFrame(dataset[selected_columns])
 
     # Convert string to float
     for i in range(0, len(selected_columns)):
