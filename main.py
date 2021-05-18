@@ -26,6 +26,20 @@ def preprocessing_datasets(path):
     ]
 
 
+# Input: class1-output.xls, Output: dataframe
+def preprocessing_datasets_v1(path):
+    dataset = read_file_excel(path + '/class1-output.xls')
+    selected_columns = ['w1', 'w2', 'w4', 'w5', 'w7', 'w8', 'w10', 'w11']
+    output = dataset[selected_columns]
+
+    # Convert string to float
+    for i in range(0, len(selected_columns)):
+        key = selected_columns[i]
+        output[key] = [str(val).replace(',', '.') for val in output[key]]
+        output[key] = pd.to_numeric(output[key])
+    return output.T
+
+
 def main():
     print("Main: Start")
 
@@ -34,10 +48,11 @@ def main():
 
     # handle origin datasets
     # should run this function in the first time
-    format_all_origin_files(path) # TODO: @Quy
+    # format_all_origin_files(path) # TODO: @Quy
 
     # Read the edited files
-    weeks = preprocessing_datasets(path) # TODO: @The Anh
+    dataset = preprocessing_datasets_v1(path)  # TODO: @The Anh
+    weeks = dataset.values
     print('Read CSV: ', weeks)
 
     #

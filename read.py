@@ -16,3 +16,8 @@ def read_file():
 def read_file_csv(uri):
     data = pd.read_csv(uri, skipfooter=1)
     return data
+
+
+def read_file_excel(uri):
+    data = pd.read_excel(uri)
+    return data
