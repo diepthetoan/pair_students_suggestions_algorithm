@@ -10,7 +10,7 @@ DIRECTORY = 'edited'
 PARENT_DIR = './datasets/'
 
 
-def read_and_format_datasets(path):
+def preprocessing_datasets(path):
     out_data = []
     for i in range(0, 8):
         data = read_file_csv(path + '/' + get_file_name(i))
@@ -37,7 +37,7 @@ def main():
     format_all_origin_files(path) # TODO: @Quy
 
     # Read the edited files
-    weeks = read_and_format_datasets(path) # TODO: @The Anh
+    weeks = preprocessing_datasets(path) # TODO: @The Anh
     print('Read CSV: ', weeks)
 
     #
