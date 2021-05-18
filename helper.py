@@ -67,6 +67,7 @@ def handle_algorithm(weeks):
     
     week_cmax['sorted_scored'].append(sorted_scores_week)
 
-  print('Result:', week_cmax['pairs'])
+  print('Result Paired:', week_cmax['pairs'])
+  print('Result Cmax:', week_cmax['cmax'])
 
 
