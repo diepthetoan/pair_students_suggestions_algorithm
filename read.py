@@ -1,7 +1,6 @@
-def read_file():
-    return [
-        [8.83, 7, 6.33, 9.67, 6.83, 9.67],
-        [5.5, 6.56, 6.67, 4.17, 3.33, 8.22],
-        [2.05, 5, 7.69, 5, 5.9, 6.67],
-        [10, 8.33, 8.33, 9, 5.5, 8]
-    ]
+import pandas as pd
+
+
+def read_file_csv(uri):
+    data = pd.read_csv(uri, skipfooter=1)
+    return data
